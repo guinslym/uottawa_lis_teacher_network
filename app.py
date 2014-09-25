@@ -90,7 +90,6 @@ for n in G:
 
 d = json_graph.node_link_data(G)
 json.dump(d, open('professeurs.json','w'))
-print('Wrote node-link JSON data to res_a.json')
-print(d)
+print('you can run:  \n \t python -m SimpleHTTPServer 8000')
 
 
