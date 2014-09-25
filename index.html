@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .popover {
+      color: #333;
+    }
+    .node {
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+    .link {
+      stroke: #fff;
+      stroke-opacity: .8;
+    }
+
+	#main {
+		margin:0 auto;
+		width:960px;
+		color:#FFF;
+		border: 1px dashed #333;
+		fill: #000;
+		}		
+	
+  line {
+		stroke: #666;
+		}
+
+body{
+    background: url("http://subtlepatterns.com/patterns/congruent_outline.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+}	
+.preambule{
+  color: white;
+}
+    </style>
+
+  </head>
+  <body>
+  <div class="container">
+<div class="row">
+ <!-- Button trigger modal -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <h2>Sujet du modal</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et temporibus facere, optio facilis earum aspernatur laborum voluptas illo explicabo ut beatae veritatis possimus iusto nam. Odio earum libero a dolores.</p>
+        <h3>Github</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum obcaecati veniam laudantium eveniet, sit, earum iusto nam eligendi atque eos dolore optio, quam neque reprehenderit ad doloremque amet architecto beatae!</p>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> 
+</div>    
+
+
+
+
+ <div class="row preambule">
+ </div> 
+
+  </div>
+    <div class="row">
+      <div id="main" class="col-md-12"></div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      var width = 960, height = 700;
+
+      var color = d3.scale.ordinal().range(['#3d4f53', '#8f4139', '#ab987a']);
+
+      var force = d3.layout.force()
+          .charge(-150)
+          .linkDistance(40)
+          .gravity(.05)
+          .size([width, height]);
+
+      var svg = d3.select("#main").append("svg")
+          .attr("id", "main-svg")
+          .attr("width", width)
+          .attr("height", height);
+
+      d3.json("professeurs.json", function(error, graph) {
+      
+        force.nodes(graph.nodes)
+          .links(graph.links)
+          .start();
+
+        var drag = force.drag()
+          .on("dragstart", dragstart);
+
+        var link = svg.selectAll(".link")
+            .data(graph.links)
+          .enter().append("line")
+            .attr("class", "link")
+            .attr("stroke-opacity", function(d) { if(d.label == 'is a') { return '0.8';} else{ return '0.2'; }; })
+            .attr("stroke-width","3")
+            .on("mouseover", function(){d3.select(this).style("stroke", "#999999").attr("stroke-opacity", "1.0");})
+            .on("mouseout", function(){d3.select(this).style("stroke", "#fff").attr("stroke-opacity", "1.0");});
+
+            link.append('title').text(function(d){
+              //console.log(d.name);
+            });
+
+        var node = svg.selectAll("g.node")
+              .data(graph.nodes)
+            .enter().append("svg:g")
+              .attr("class", "node")
+              .on("trigger_me", trigger_me)
+              .call(force.drag);
+
+        node.append("circle")
+          .attr("class",function (d) { return d.type + " nodecircle" })
+          .attr("r", function(d){if (d.mls){
+            return d.size;
+          }else if (d.type == 'school'){
+            return d.size;
+          }else{
+            return d.size;
+          }})
+          .style("fill", function (d) { 
+            if(d.name == 'University of Western Ontario'){
+              return '#fff000';
+            }else{
+              return d.color;
+            }
+             })
+          .on("mouseover", showPopover)
+          .on("mouseout", removePopovers);
+
+        
+
+
+        force.on("tick", function() {
+          link.attr("x1", function (d) { return d.source.x; })
+              .attr("y1", function (d) { return d.source.y; })
+              .attr("x2", function (d) { return d.target.x; })
+              .attr("y2", function (d) { return d.target.y; });
+
+          node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        })
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+        function trigger_me(d) {
+          force.start();
+        }
+
+        function dragstart(d) {
+          d3.select(this).classed("fixed", d.fixed = true);
+        }
+      });
+
+      function removePopovers () {
+        //bootstrap javascript
+        $('.popover').each(function() {
+          $(this).remove();
+        }); 
+      }
+
+      function showPopover (d) {
+        //bootstrap javascript
+        $(this).popover({
+          placement: 'auto top',
+          container: 'body',
+          trigger: 'manual',
+          html : true,
+          content: function() {
+            if (d.type == 'teacher'){
+              return d.type.slice(0,1).toUpperCase() + d.type.slice(1) + ": " + d.name 
+            }else{
+              return d.name;
+            }
+         }  
+        });
+        $(this).popover('show')
+      }
+
+    </script>
+    <script type="text/javascript">
+
+
+      function resize_the_svg_window () {
+        var chart = $("#main-svg");
+        chart.attr("width", chart.parent().width());
+        chart.attr("height", chart.parent().height());
+        force.size([chart.parent().width(), chart.parent().height()]);
+        force.start(); 
+      }
+
+      $(document).ready(function() {
+        resize_the_svg_window();
+
+      });
+
+      $(window).on("resize_the_svg_window", function() {
+        resize_the_svg_window();
+      });
+    </script>
+  </body>
+</html>
