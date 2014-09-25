@@ -34,6 +34,22 @@ body{
 .preambule{
   color: white;
 }
+.color-yellow{
+  background-color: #FFF000;
+  padding-right:20px;
+}
+.color-green{
+  background-color:#7CA721; 
+  padding-right:20px;
+}
+.color-red{
+  background-color: #8F4139;
+  padding-right:20px;
+}
+.color-orange{
+  background-color: #DA991C;
+  padding-right:20px;
+}
     </style>
 
   </head>
@@ -42,7 +58,7 @@ body{
 <div class="row">
  <!-- Button trigger modal -->
 <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
+  Information
 </button>
 
 <!-- Modal -->
@@ -51,14 +67,27 @@ body{
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Network Analysis of University Ottawa MIS's professors</h4>
       </div>
       <div class="modal-body">
-        <h2>Sujet du modal</h2>
+        <h2>Preambule</h2>
         <p>The real text is on my blog</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et temporibus facere, optio facilis earum aspernatur laborum voluptas illo explicabo ut beatae veritatis possimus iusto nam. Odio earum libero a dolores.</p>
-        <h3>Github</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum obcaecati veniam laudantium eveniet, sit, earum iusto nam eligendi atque eos dolore optio, quam neque reprehenderit ad doloremque amet architecto beatae!</p>        
+        <p>This is a <a href="https://github.com/mbostock/d3/wiki/Force-Layout" target='_blank'> network or graph diagram</a> that shows which university each professors went to, either they are regular full-time, adjunct or part-time and cross-appointed professors</p>
+        <h3>How does it Work ?</h3>
+        <p>As you can see there is a set of nodes of different size and colors.</p>  
+        <ul>
+                <li><span class="color-yellow">&nbsp;&nbsp;</span> This color represents the university that most professors have in common. (UWO)</li>
+                <li><span class="color-orange">&nbsp;&nbsp;</span> This color represents  all canadian universities that offers an Information Studies program</li>
+                <li><span class="color-green">&nbsp;&nbsp;</span> This color represents all the universities (canadian or not). In fact all the <strong>bigger nodes represents universities</strong>. </li>
+                <li><span class="color-red">&nbsp;&nbsp;</span> This colors represents all the teachers for 2014-15 year</li>
+              </ul>      
+        <p>As you can see (the yellow node) 5 professors went to the University of Western Ontario. Following up for 4 professors that attends McGill University. </p>
+        <p>What I do like about diagram it's that it will trigger questions. Why does UWO have the most attendances? Is UWO is the best school in IS in Canada? What is the chronology of all IS in Canada? Did UWO was the first school that offers MLIS? If I add up all the professors that teachs in a Masters of Information Studies in Canada, will UWO will still be the one that most teachers attends?</p>
+        <p>Keep in my that <a href="http://en.wikipedia.org/wiki/Correlation_does_not_imply_causation" target="_blank"> Correlation does not imply causation</a>. This visualization does not imply that UWO or McGill are the best school for MLIS neither that I'll have a better chance to have a job as a teacher.</p>
+        <h3>Gihub</h3>
+        <p>The program is available on my <a href="https://github.com/guinslym/uottawa_lis_teacher_network" target='_blank'> github</a> if you would like to play with it</p>
+        <h3>Hack Safe!!! :)</h3>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
